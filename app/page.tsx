@@ -143,7 +143,8 @@ export default function Home() {
             />
           </div>
 
-          {image && <img src={image} alt="Preview" className="w-full h-56 object-cover mb-6 rounded-2xl shadow-inner border" />}
+          {/* FIXED: Image display set to object-contain so it doesn't crop */}
+          {image && <img src={image} alt="Preview" className="w-full h-56 object-contain bg-slate-100 mb-6 rounded-2xl shadow-inner border" />}
 
           <button 
             onClick={processCard} 
