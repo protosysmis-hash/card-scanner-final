@@ -5,7 +5,7 @@ export async function POST(req: Request) {
   try {
     const { image } = await req.json();
     
-    // API Key ko environment variable se uthao, code mein mat likho!
+    // API Key check
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error("API Key missing in environment variables");
@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // Sabse stable model use karo
+    // Model name confirm kar lena, agar error aaye toh "gemini-1.5-flash" try karna
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
     const base64Data = image.includes(",") ? image.split(",")[1] : image;
@@ -31,6 +31,22 @@ export async function POST(req: Request) {
     const response = await result.response;
     const text = response.text().replace(/```json/g, '').replace(/```/g, '').trim();
     const data = JSON.parse(text);
+
+    // Google Sheet Integration
+    const scriptUrl = process.env.GOOGLE_SCRIPT_URL;
+    if (scriptUrl) {
+      try {
+        await fetch(scriptUrl, {
+          method: 'POST',
+          mode: 'no-cors', // CORS error se bachne ke liye
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        console.log("Data successfully sent to Google Sheet");
+      } catch (err) {
+        console.error("Sheet update failed:", err);
+      }
+    }
 
     return NextResponse.json({ result: data });
 
