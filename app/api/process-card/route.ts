@@ -13,14 +13,14 @@ export async function POST(req: Request) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // Model name confirm kar lena, agar error aaye toh "gemini-1.5-flash" try karna
+    // Stable model use karo
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
     const base64Data = image.includes(",") ? image.split(",")[1] : image;
 
-    const prompt = `Extract name, jobTitle, company, email, phone, linkedinUrl from this business card image. 
+    const prompt = `Extract name, jobTitle, company, email, phone, linkedinUrl, website, and address from this business card image. 
     Return the response as a valid JSON object with the following fields: 
-    { "name": "", "jobTitle": "", "company": "", "email": "", "phone": "", "linkedinUrl": "", "whatsappDraft": "" }
+    { "name": "", "jobTitle": "", "company": "", "email": "", "phone": "", "linkedinUrl": "", "website": "", "address": "", "whatsappDraft": "" }
     Make sure whatsappDraft is a polite professional follow-up message.`;
 
     const result = await model.generateContent([
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       try {
         await fetch(scriptUrl, {
           method: 'POST',
-          mode: 'no-cors', // CORS error se bachne ke liye
+          mode: 'no-cors', 
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
         });
