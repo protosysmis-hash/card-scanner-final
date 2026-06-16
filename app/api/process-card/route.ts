@@ -13,15 +13,28 @@ export async function POST(req: Request) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // Stable model use karo
+    // Model wahi rakha hai jo tumne manga tha
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
 
     const base64Data = image.includes(",") ? image.split(",")[1] : image;
 
-    const prompt = `Extract name, jobTitle, company, email, phone, linkedinUrl, website, and address from this business card image. 
-    Return the response as a valid JSON object with the following fields: 
-    { "name": "", "jobTitle": "", "company": "", "email": "", "phone": "", "linkedinUrl": "", "website": "", "address": "", "whatsappDraft": "" }
-    Make sure whatsappDraft is a polite professional follow-up message.`;
+    // Strict Prompt: AI ko kaha hai ki saari details dhoonde
+    const prompt = `You are a business card scanner. Analyze the image and extract ALL of these details: name, jobTitle, company, email, phone, linkedinUrl, website, and address.
+    
+    Return the response as a strict JSON object. If a field is missing, return "Not provided".
+    
+    JSON format:
+    { 
+      "name": "", 
+      "jobTitle": "", 
+      "company": "", 
+      "email": "", 
+      "phone": "", 
+      "linkedinUrl": "", 
+      "website": "", 
+      "address": "", 
+      "whatsappDraft": "Write a professional follow-up message." 
+    }`;
 
     const result = await model.generateContent([
       prompt,
