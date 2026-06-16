@@ -125,18 +125,18 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] p-4 md:p-8 text-slate-900 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 p-4 md:p-8 text-slate-900 font-sans">
       <div className="max-w-2xl mx-auto">
         <header className="mb-10 text-center">
-            <h1 className="text-4xl md:text-5xl font-black text-slate-950 tracking-tighter">
+            <h1 className="text-5xl font-black text-slate-950 tracking-tighter drop-shadow-sm">
               CardToConnect <span className="text-blue-600">Pro</span>
             </h1>
-            <p className="text-slate-500 mt-2 font-medium">Business card se digital connect tak</p>
+            <p className="text-slate-600 mt-2 font-medium">Business card se digital connect tak</p>
         </header>
         
-        <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200">
+        <div className="bg-white/70 backdrop-blur-xl p-6 md:p-8 rounded-[2.5rem] shadow-2xl border border-white/50">
           <div className="mb-6">
-            <label className="block text-sm font-bold text-slate-500 uppercase tracking-widest mb-3">Upload Business Card</label>
+            <label className="block text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-4">Upload Business Card</label>
             <input 
               type="file" 
               accept="image/*" 
@@ -147,7 +147,7 @@ export default function Home() {
           </div>
 
           {image && (
-             <div className="w-full h-64 mb-8 rounded-3xl bg-slate-900 border overflow-hidden flex items-center justify-center p-1">
+             <div className="w-full h-64 mb-8 rounded-[2rem] bg-slate-900 border-4 border-white shadow-lg overflow-hidden flex items-center justify-center p-1">
                 <img src={image} alt="Preview" className="max-h-full w-auto object-contain" />
              </div>
           )}
@@ -155,14 +155,14 @@ export default function Home() {
           <button 
             onClick={processCard} 
             disabled={loading}
-            className="w-full bg-slate-950 hover:bg-slate-800 text-white font-bold py-5 rounded-2xl shadow-xl transition-all active:scale-[0.98] disabled:opacity-50"
+            className="w-full bg-slate-950 hover:bg-slate-800 text-white font-bold py-5 rounded-[1.5rem] shadow-xl hover:shadow-2xl transition-all active:scale-[0.98] disabled:opacity-50"
           >
             {loading ? 'Processing...' : 'Scan & Extract Data'}
           </button>
         </div>
 
         {cardData && (
-          <div className="bg-white p-6 md:p-8 rounded-[2rem] shadow-sm border border-slate-200 mt-8 space-y-8 animate-in fade-in zoom-in duration-500">
+          <div className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-xl border border-slate-100 mt-8 space-y-8 animate-in fade-in zoom-in duration-500">
             <h2 className="text-3xl font-extrabold text-slate-950">Extracted Info</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
@@ -173,25 +173,25 @@ export default function Home() {
                 { label: "Phone", value: cardData.phone },
                 { label: "Website", value: cardData.website }
               ].map((item, idx) => (
-                  <div key={idx} className="bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">{item.label}</p>
+                  <div key={idx} className="bg-slate-50 p-5 rounded-2xl border border-slate-100">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{item.label}</p>
                       <p className="font-semibold text-slate-800 mt-1">{item.value || "Not found"}</p>
                   </div>
               ))}
-              <div className="md:col-span-2 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Address</p>
+              <div className="md:col-span-2 bg-slate-50 p-5 rounded-2xl border border-slate-100">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Address</p>
                   <p className="font-semibold text-slate-800 mt-1">{cardData.address || "Not found"}</p>
               </div>
             </div>
             
-            <div className="bg-blue-50/50 p-6 rounded-3xl border border-blue-100">
-              <h3 className="font-bold text-blue-950 mb-3 text-lg">Quick Actions:</h3>
-              <p className="text-blue-800 text-sm italic mb-6 bg-white p-4 rounded-xl border border-blue-100">"{cardData.whatsappDraft}"</p>
+            <div className="bg-blue-600 p-6 rounded-[2rem] shadow-lg">
+              <h3 className="font-bold text-white mb-3 text-lg">Quick Actions:</h3>
+              <p className="text-blue-100 text-sm italic mb-6 bg-blue-700/50 p-4 rounded-xl">"{cardData.whatsappDraft}"</p>
               
               <div className="flex gap-3">
-                <button onClick={sendWhatsApp} disabled={!cardData.phone} className="flex-1 bg-green-600 text-white font-bold py-4 rounded-2xl text-sm hover:bg-green-700 disabled:opacity-40 transition">WhatsApp</button>
-                <button onClick={sendEmail} disabled={!cardData.email} className="flex-1 bg-rose-500 text-white font-bold py-4 rounded-2xl text-sm hover:bg-rose-600 disabled:opacity-40 transition">Email</button>
-                <button onClick={openLinkedIn} className="flex-1 bg-blue-700 text-white font-bold py-4 rounded-2xl text-sm hover:bg-blue-800 transition">LinkedIn</button>
+                <button onClick={sendWhatsApp} disabled={!cardData.phone} className="flex-1 bg-green-500 text-white font-bold py-4 rounded-xl text-sm hover:bg-green-600 disabled:opacity-40 transition">WhatsApp</button>
+                <button onClick={sendEmail} disabled={!cardData.email} className="flex-1 bg-rose-500 text-white font-bold py-4 rounded-xl text-sm hover:bg-rose-600 disabled:opacity-40 transition">Email</button>
+                <button onClick={openLinkedIn} className="flex-1 bg-white text-blue-700 font-bold py-4 rounded-xl text-sm hover:bg-slate-100 transition">LinkedIn</button>
               </div>
             </div>
           </div>
