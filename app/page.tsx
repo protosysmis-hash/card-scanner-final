@@ -125,86 +125,61 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-8 text-black">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">CardToConnect Clone (100% FREE)</h1>
-      
-      <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md border border-gray-200">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Upload or Take Photo of Card</label>
-          <input 
-            type="file" 
-            accept="image/*" 
-            capture="environment" 
-            onChange={handleImageChange} 
-            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
-          />
+    <div className="min-h-screen bg-slate-50 p-4 md:p-8 text-slate-900">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-4xl font-extrabold text-blue-900 mb-8 text-center tracking-tight">
+          CardToConnect <span className="text-blue-600">Pro</span>
+        </h1>
+        
+        <div className="bg-white p-6 md:p-8 rounded-3xl shadow-lg border border-slate-100">
+          <div className="mb-6">
+            <label className="block text-sm font-semibold text-slate-600 mb-2">Upload Business Card</label>
+            <input 
+              type="file" 
+              accept="image/*" 
+              capture="environment" 
+              onChange={handleImageChange} 
+              className="w-full text-sm text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition cursor-pointer" 
+            />
+          </div>
+
+          {image && <img src={image} alt="Preview" className="w-full h-56 object-cover mb-6 rounded-2xl shadow-inner border" />}
+
+          <button 
+            onClick={processCard} 
+            disabled={loading}
+            className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-2xl transition-all active:scale-95 disabled:opacity-50"
+          >
+            {loading ? 'Processing...' : 'Scan & Extract Data'}
+          </button>
         </div>
 
-        {image && <img src={image} alt="Preview" className="w-full h-48 object-contain mb-4 rounded-lg border" />}
-
-        <button 
-          onClick={processCard} 
-          disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition disabled:bg-gray-400"
-        >
-          {loading ? 'Processing...' : 'Scan & Extract Card'}
-        </button>
-      </div>
-
-      {cardData && (
-        <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md border border-gray-200 mt-6">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">Extracted Contact Intel</h2>
-          <div className="space-y-2">
-            <p><strong>Name:</strong> {cardData.name}</p>
-            <p><strong>Job Title:</strong> {cardData.jobTitle}</p>
-            <p><strong>Company:</strong> {cardData.company}</p>
-            <p><strong>Email:</strong> {cardData.email}</p>
-            <p><strong>Phone:</strong> {cardData.phone}</p>
-            <p><strong>Website:</strong> {cardData.website}</p>
-            <p><strong>Address:</strong> {cardData.address}</p>
-            <p>
-              <strong>LinkedIn:</strong>{' '}
-              {cardData.linkedinUrl ? (
-                <a href={cardData.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
-                  {cardData.linkedinUrl}
-                </a>
-              ) : (
-                <span className="text-gray-500 italic">Not on card (Ready to Search)</span>
-              )}
-            </p>
-          </div>
-          
-          <div className="mt-4 pt-4 border-t">
-            <h3 className="font-semibold text-gray-700 mb-2">AI Generated WhatsApp Follow-up:</h3>
-            <p className="bg-gray-50 p-3 rounded text-sm text-gray-600 italic mb-4">"{cardData.whatsappDraft}"</p>
+        {cardData && (
+          <div className="bg-white p-6 md:p-8 rounded-3xl shadow-lg border border-slate-100 mt-8 space-y-6 animate-in fade-in zoom-in duration-300">
+            <h2 className="text-2xl font-bold text-slate-900 border-b pb-4">Extracted Contact Info</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <p><strong>Name:</strong><br/><span className="text-slate-600">{cardData.name}</span></p>
+              <p><strong>Job Title:</strong><br/><span className="text-slate-600">{cardData.jobTitle}</span></p>
+              <p><strong>Company:</strong><br/><span className="text-slate-600">{cardData.company}</span></p>
+              <p><strong>Email:</strong><br/><span className="text-slate-600">{cardData.email}</span></p>
+              <p><strong>Phone:</strong><br/><span className="text-slate-600">{cardData.phone}</span></p>
+              <p><strong>Website:</strong><br/><span className="text-slate-600">{cardData.website}</span></p>
+              <p className="md:col-span-2"><strong>Address:</strong><br/><span className="text-slate-600">{cardData.address}</span></p>
+            </div>
             
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                onClick={sendWhatsApp}
-                disabled={!cardData.phone}
-                className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-2 rounded-lg text-xs transition flex items-center justify-center gap-1 disabled:bg-gray-300"
-              >
-                💬 WhatsApp
-              </button>
+            <div className="bg-blue-50 p-5 rounded-2xl border border-blue-100">
+              <h3 className="font-bold text-blue-900 mb-2">WhatsApp Follow-up:</h3>
+              <p className="text-blue-800 text-sm italic mb-4">"{cardData.whatsappDraft}"</p>
               
-              <button
-                onClick={sendEmail}
-                disabled={!cardData.email}
-                className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-2 rounded-lg text-xs transition flex items-center justify-center gap-1 disabled:bg-gray-300"
-              >
-                ✉️ Email
-              </button>
-
-              <button
-                onClick={openLinkedIn}
-                className="bg-blue-700 hover:bg-blue-800 text-white font-medium py-2 px-2 rounded-lg text-xs transition flex items-center justify-center gap-1"
-              >
-                🔗 LinkedIn
-              </button>
+              <div className="flex gap-3">
+                <button onClick={sendWhatsApp} disabled={!cardData.phone} className="flex-1 bg-green-600 text-white font-bold py-3 rounded-xl text-sm hover:bg-green-700 disabled:opacity-50">WhatsApp</button>
+                <button onClick={sendEmail} disabled={!cardData.email} className="flex-1 bg-red-500 text-white font-bold py-3 rounded-xl text-sm hover:bg-red-600 disabled:opacity-50">Email</button>
+                <button onClick={openLinkedIn} className="flex-1 bg-blue-700 text-white font-bold py-3 rounded-xl text-sm hover:bg-blue-800">LinkedIn</button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
