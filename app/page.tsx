@@ -143,8 +143,12 @@ export default function Home() {
             />
           </div>
 
-          {/* FIXED: Image display set to object-contain so it doesn't crop */}
-          {image && <img src={image} alt="Preview" className="w-full h-56 object-contain bg-slate-100 mb-6 rounded-2xl shadow-inner border" />}
+          {/* FIXED: Container set to relative, overflow-hidden, and object-contain to prevent cutting */}
+          {image && (
+             <div className="w-full h-56 mb-6 rounded-2xl bg-slate-100 border overflow-hidden flex items-center justify-center p-2">
+                <img src={image} alt="Preview" className="max-h-full w-auto object-contain" />
+             </div>
+          )}
 
           <button 
             onClick={processCard} 
