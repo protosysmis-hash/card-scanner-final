@@ -71,7 +71,6 @@ export default function Home() {
         console.log("Scanned Data:", data.result);
         setCardData(data.result);
       } else {
-        // Yahan maine error detail dikhane ka code update kiya hai
         console.error("Scanner Error:", data.error);
         alert(`Scanner Error: ${data.error || "Unknown Error"}\nDetails: ${data.details || "No details provided"}`);
       }
@@ -161,6 +160,8 @@ export default function Home() {
             <p><strong>Company:</strong> {cardData.company}</p>
             <p><strong>Email:</strong> {cardData.email}</p>
             <p><strong>Phone:</strong> {cardData.phone}</p>
+            <p><strong>Website:</strong> {cardData.website}</p>
+            <p><strong>Address:</strong> {cardData.address}</p>
             <p>
               <strong>LinkedIn:</strong>{' '}
               {cardData.linkedinUrl ? (
